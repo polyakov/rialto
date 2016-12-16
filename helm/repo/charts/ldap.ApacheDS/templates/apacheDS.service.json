@@ -1,0 +1,27 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "{{ template "fullname" . }}-svc"
+    },
+    "spec": {
+        "selector": {
+            "app": "ldap"
+        },
+        "ports": [
+            {
+                "name": "ldap-port",
+                "protocol": "TCP",
+                "port": {{ .Values.ldapPort }},
+                "targetPort": 10389
+            }
+        ],
+	"externalIPs" : [
+	   {{range $index, $ip := .Values.externalIPs}} 
+              {{ if $index }} , {{end}}
+              {{ $ip | quote  }} 
+           {{ end }}
+	  
+        ]
+    }
+}

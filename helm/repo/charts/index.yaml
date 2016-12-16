@@ -1,0 +1,11 @@
+apiVersion: v1
+entries:
+  ldap.ApacheDS:
+  - created: 2016-12-16T19:21:49.142899004Z
+    description: ApacheDS install
+    digest: 8482ffe1916e10bb571969c45661b80155ae5dc69cb37e9d3b8c45bbfdfca1c2
+    name: ldap.ApacheDS
+    urls:
+    - http://127.0.0.1:8879/ldap.ApacheDS-0.1.0.tgz
+    version: 0.1.0
+generated: 2016-12-16T19:21:49.142638519Z
