@@ -1,0 +1,3 @@
+name: openid-connect-ldap-mitre
+version: 0.1.0
+description: MITREid Connect with ldap overlay

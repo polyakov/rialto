@@ -1,0 +1,41 @@
+{
+    "kind": "ReplicationController",
+    "apiVersion": "v1",
+    "metadata": {
+        "name":  "mitre-id-connect-ldap"
+    },
+    "spec": {
+        "replicas":{{ .Values.replicaCount }},
+        "selector": {
+            "app": "openid-connect"
+        },
+        "template":{
+           "metadata":{
+              "labels":{
+                 "app":"openid-connect"
+              }
+           },
+           "spec":{
+              "containers":[
+              {
+                  "name":"openid-connect",
+                  "image":"polyakov/mitreid-connect",
+                  "env": [
+                      {"name": "ldap_server", "value":  {{ .Values.ldap_server | quote }} },
+                      {"name": "ldap_url", "value":     {{ .Values.ldap_url | quote }} },
+                      {"name": "ldap_base", "value":    {{ .Values.ldap_base | quote }}  },
+                      {"name": "issuer_url", "value":   {{ .Values.issuer_url | quote }} }
+                  ]
+                  "resources": {
+                      "requests":{
+                         "cpu": "10m"
+                      }
+		          }
+              }],
+              "nodeSelector": {
+                "app": "true"
+              }
+           }
+        }
+    }
+}
