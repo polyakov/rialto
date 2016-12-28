@@ -1,0 +1,27 @@
+{
+   "exposes": [
+      {
+         "wellKnownType": "www",
+         "properties": [
+            {
+                "wellKnownName": "wwwPort",
+                "interfaceName": "wwwPort"
+               
+            }
+         ]
+      }
+   ],
+   "dependsOn": [
+      {
+	 "implementsType": "ldap",
+         "properties": [
+            {
+		"wellKnownName": "ldapPort",
+                "interfaceName": "ldapPort"
+
+            }
+         ]
+      }
+
+   ]
+}

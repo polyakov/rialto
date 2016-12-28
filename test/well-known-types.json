@@ -1,0 +1,21 @@
+{
+  "interfaces": [
+    {
+       "type": "ldap",
+       "properties": [
+          { 
+		"name": "ldapPort", "defaultValue":389
+          }
+       ]
+    },
+    {
+       "type": "www",
+       "properties": [
+          {
+              "name": "wwwPort", 
+              "defaultValue": 80
+          }
+       ]
+    }
+]
+}
