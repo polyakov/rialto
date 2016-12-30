@@ -2,7 +2,7 @@ externalIPs: ["172.20.0.149","172.20.0.150","172.20.0.152","172.20.0.151"]
 ldapPort: 389
 serviceInstanceName: "vp-test"
 replicaCount: 2
-ldap_server: "ldap://ldap-svc:389/dc=example,dc=co"
+ldap_server: "ldap://ldap-svc:389/dc=example,dc=com"
 ldap_url: "ldap://ldap-svc:389"
 ldap_base: "ou=Users,dc=example,dc=com"
 issuer_url: "http://mitreid-svc:8080/ldap-openid-connect-server/"

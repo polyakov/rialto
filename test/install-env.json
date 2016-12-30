@@ -2,10 +2,19 @@
   "instances": [
     {
       "name": "apache-ds-instance",
-      "serviceName": "apacheDS",
+      "serviceName": "apacheDS-svc",
       "chartSource": {
         "helmRepo":"hspc-helm",
         "chartName":"ldap.ApacheDS",
+        "url": "http://hspc-helm.preparedmind.net"
+      }
+    },
+    {
+      "name": "openid-connect-instance",
+      "serviceName": "mitre-openid-connect-svc",
+      "chartSource": {
+        "helmRepo":"hspc-helm",
+        "chartName":"openid-connect-ldap-mitre",
         "url": "http://hspc-helm.preparedmind.net"
       }
     }
