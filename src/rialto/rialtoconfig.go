@@ -17,9 +17,9 @@ func check(e error) {
     }
 }
 
-func prompt(message string)string {
+func prompt(message string, defaultVal string)string {
 	fmt.Printf(message)
-	var input string
+	var input string=defaultVal
 	fmt.Scanln(&input)
 
 	return input;
@@ -27,10 +27,11 @@ func prompt(message string)string {
 }
 var context Context
 
-func InitMe() Context {
+func Init() Context {
 
 	context.Services=map[string]ServiceConfig{}
 	// load service catalog
+
 	var service1File string = "../helm/repo/charts/openid-connect-ldap-mitre/www-chart.json"
 	service1:= ReadServiceConfig( service1File )
  //bolB, _ := json.Marshal(service1)
@@ -51,7 +52,43 @@ func LoadValueTemplate(serviceInstance ServiceInstance) string {
 	//fmt.Println(url)
 	url=strings.TrimSpace( url )
 
+	return loadUrl(url)
+
+}
+
+func LoadServiceConfig(serviceInstance ServiceInstance) ServiceConfig {
+	var url string = serviceInstance.ChartSource.Url+
+		"/"+serviceInstance.ChartSource.ChartName+
+		"/hspc.json"
+	//fmt.Println(url)
+	url=strings.TrimSpace( url )
+
+	strConfig:=loadUrl(url)
+
+	return ParseServiceConfig(strConfig)
+}
+
+func GetExternalIPs()[]string{
+	var ips []string = []string{}
+	for nextLoopOk := true; nextLoopOk;
+	{
+		var newIP string = prompt("Enter external IP. (Enter to continue)","")
+		if(newIP== "") {
+			nextLoopOk=false;
+		} else {
+			ips = append(ips, newIP)
+		}
+	}
+
+	return ips
+}
+
+func loadUrl(url string)string{
+	fmt.Println(url)
 	res, err := http.Get(url)
+	if(res.StatusCode != 200) {
+		panic(fmt.Sprintf("Request to %v, response code: %v\n", url, res.StatusCode))
+	}
 	check(err)
 
 	valueTemplate, err := ioutil.ReadAll(res.Body)
@@ -60,6 +97,7 @@ func LoadValueTemplate(serviceInstance ServiceInstance) string {
 
 	//fmt.Printf("valueTemplate: %s", valueTemplate)
 	str := string(valueTemplate[:])
+
 	return str
 
 }
@@ -117,7 +155,7 @@ func GetServiceInstance(foundServiceConfig ServiceConfig, name string) ServiceIn
 		var exposedProperties ServiceInstanceProperties = ServiceInstanceProperties{}
 		exposedProperties.Properties = map[string]string{}
 		for _, foundProperty := range foundInterface.Properties {
-			input:=prompt(fmt.Sprintf("Enter value for %v.%v[Exposes]\n", foundServiceConfig.Name, foundProperty.Name))
+			input:=prompt(fmt.Sprintf("Exposes: Enter value for %v.%v[%v]\n", foundServiceConfig.Name, foundProperty.Name, foundProperty.DefaultValue), foundProperty.DefaultValue)
 			exposedProperties.Properties[foundProperty.Name] = input;
 		}
 		serviceInstance.Exposes[foundInterface.Name] = exposedProperties
@@ -129,43 +167,37 @@ func GetServiceInstance(foundServiceConfig ServiceConfig, name string) ServiceIn
 		dependsOnProperties.Properties=map[string]string{}
 		for _,foundProperty:= range foundInterface.Properties {
 	//		fmt.Printf("Found prop: %v: %v\n", indexProp, foundProperty.Name)
-			input:=prompt(fmt.Sprintf("Enter value for %v.%v[DependsOn]\n", foundInterface.Name, foundProperty.Name))
+			input:=prompt(fmt.Sprintf("DependsOn: Enter value for %v.%v[%v]\n", foundInterface.Name, foundProperty.Name, foundProperty.DefaultValue), foundProperty.DefaultValue)
 			dependsOnProperties.Properties[foundProperty.Name]=input;
 		}
 		serviceInstance.DependsOn[foundInterface.Name] = dependsOnProperties
 	}
 
-	/*for interfaceIndex,foundInterface:= range foundServiceConfig.Properties {
-		fmt.Printf("Found properties")
-		var properties ServiceInstanceProperties = ServiceInstanceProperties{}
-	*/
 	var serviceProperties=map[string]string{}
 	for _,foundProperty:= range foundServiceConfig.Properties {
-	//	fmt.Printf("Found prop: %v: %v\n", indexProp, foundProperty.Name)
-		input:=prompt(fmt.Sprintf("Enter value for service property %v.%v\n", foundServiceConfig.Name, foundProperty.Name))
+		input:=prompt(fmt.Sprintf("Service Properties: Enter value for %v.%v[%v]\n", foundServiceConfig.Name, foundProperty.Name, foundProperty.DefaultValue), foundProperty.DefaultValue)
 		serviceProperties[foundProperty.Name]=input;
 	}
 	serviceInstance.Properties = serviceProperties
-
 	return serviceInstance;
 }
 
 //ReadServiceConfig - parse JSON service config and return ServiceConfig stuct
 func ReadServiceConfig( filepath string)  ServiceConfig {
-    //fmt.Printf("filename: %v", filepath)
-
-    dat, err := ioutil.ReadFile(filepath)
-    check(err)
-
-//    var jsonStr = string(dat)
-//    fmt.Print(jsonStr)
-
-    res := ServiceConfig{}
-    json.Unmarshal(dat, &res)
-    fmt.Println(res)
-
-    return res;
+	dat, err := ioutil.ReadFile(filepath)
+	check(err)
+	var jsonStr = string(dat)
+//      fmt.Print(jsonStr)
+	return ParseServiceConfig(jsonStr);
 }
+
+func ParseServiceConfig( content string)  ServiceConfig {
+	res := ServiceConfig{}
+	json.Unmarshal([]byte(content), &res)
+	//fmt.Println(res)
+	return res;
+}
+
 
 //ReadInstallConfig - read a JSON doc with configuration of service instances
 func ReadInstallConfig( filepath string)  InstallConfig {

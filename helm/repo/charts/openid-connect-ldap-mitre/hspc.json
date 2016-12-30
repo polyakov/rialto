@@ -1,0 +1,28 @@
+{
+   "name": "mitre-openid-connect-svc",
+   "exposes": [
+      {
+         "name": "www",
+         "properties": [
+            {"name": "port", "defaultValue": "80"},
+            {"name": "webServiceName",  "defaultValue": "openid-svc" }
+         ]
+      }
+   ],
+   "dependsOn": [
+      {
+         "name": "directoryServer",
+         "properties": [
+            { "name": "sourcePort",  "defaultValue": "389" },
+            { "name": "sourceServer",  "defaultValue": "apacheds-svc" }
+         ]
+      }
+   ],
+   "properties": [
+      {"name": "replicaCount",  "defaultValue": "2"},
+      { "name": "rootQuery",  "defaultValue": "dc=example,dc=com"},
+      { "name": "ldapBase", "defaultValue": "ou=Users,dc=example,dc=com"},
+      { "name": "externalIssuerUrl", "defaultValue": "http://mitreid-svc:8080/ldap-openid-connect-server/"}
+
+   ]
+}

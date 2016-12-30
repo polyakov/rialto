@@ -1,0 +1,1 @@
+go run .\rialto.go -install-file ../test/install-env.json

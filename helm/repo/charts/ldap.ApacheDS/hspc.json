@@ -1,0 +1,13 @@
+{
+   "name": "apacheDS-svc",
+   "exposes": [
+      {
+         "name": "ldap",
+         "properties": [
+            {"name": "port", "defaultValue": "389"},
+            {"name": "serviceName", "defaultValue": "apacheds-svc"},
+            {"name": "nodeSelector", "defaultValue": "app=true"}
+         ]
+      }
+   ]
+}
