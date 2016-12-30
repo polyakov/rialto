@@ -1,13 +1,22 @@
 package main
 
+import "os"
 import "rialto"
 import "fmt"
-import "encoding/json"
+//import "encoding/json"
 import "io/ioutil"
 
 func check(e error) {
 	if e != nil {
 		panic(e)
+	}
+}
+
+func checkOk(ok bool, message string) {
+	if !ok {
+		errStr:=fmt.Sprintf(message)
+		//fmt.Println(errStr)
+		panic(errStr)
 	}
 }
 
@@ -17,77 +26,66 @@ func main() {
     rialto.ReadWellKnownServiceConfig( wellKnownTypesFile )
     */
 
-    var services= map[string]rialto.ServiceConfig{}
 
-   /* var service1File string = "../helm/repo/charts/openid-connect-ldap-mitre/www-chart.json"
-    service1:= rialto.ReadServiceConfig( service1File )
-    bolB, _ := json.Marshal(service1)
-    fmt.Println(string(bolB))
-    services[service1.Name]=service1
-*/
-    var service2File string = "../helm/repo/charts/ldap.ApacheDS/ldap-chart.json"
-    service2:= rialto.ReadServiceConfig( service2File )
-    services[service2.Name]=service2
+	//Initialize, load available services into memory
+	//TODO:err
+	context:=rialto.InitMe()
 
-    var installConfigFile string = "../test/install-env.json"
-    installConfig:= rialto.ReadInstallConfig( installConfigFile )
-    bolB, _ := json.Marshal( installConfig )
-    fmt.Println(string(bolB))
+	//TODO: Path should be a parameter
+    	var installConfigFile string = "../test/install-env.json"
 
+	//parse config
+    	installConfig:= rialto.ReadInstallConfig( installConfigFile )
 
-    configFiles := map[string]map[string]string{}
+	//setup a list of running service instances
+    	serviceInstances:=map[string]rialto.ServiceInstance{}
 
-    serviceInstances:=map[string]rialto.ServiceInstance{}
-	//values delete
-	var val1TemplatePath string = "../helm/repo/charts/ldap.ApacheDS/values.template.yaml"
+	//setup deployment environement
+	var env rialto.EnvironmentInstance = rialto.EnvironmentInstance{}
+	env.ExternalIPs=[]string{"asdas", "asdsadasdasd"}
 
-	// values end delete
+	f, err := os.Create("./deploy.sh")
+	check(err)
+	defer f.Close()
+	f.WriteString("#!/bin/bash\n\n")
+	for _,plannedServerInstances := range installConfig.Instances {
+		foundServiceConfig, ok:= context.Services[plannedServerInstances.ServiceName]
+		checkOk(ok, fmt.Sprintf("Service not found: %v", plannedServerInstances.Name))
 
-    //find properties needed to define
-    for _,element := range installConfig.Instances {
-        // index is the index where we are
-        // element is the element from someSlice for where we are
-        //fmt.Println(index)
-        //fmt.Println(element.Name)
-        foundServiceConfig, ok:= services[element.ServiceName]
+		//fmt.Println(foundServiceConfig.Name)
 
-        if !ok {
-            errStr:=fmt.Sprintf("Service not found: %v", element.Name)
-            //fmt.Println(errStr)
-            panic(errStr)
-        }
-        fmt.Println(foundServiceConfig.Name)
+        	//create service instance from config
+        	serviceInstances[plannedServerInstances.Name]=rialto.GetServiceInstance(foundServiceConfig, plannedServerInstances.Name )
 
-        //create service instance from config
-        serviceInstances[element.Name]=rialto.GetServiceInstance(foundServiceConfig, element.Name )
-	    fmt.Println(serviceInstances[element.Name])
-	    var templateStr string = rialto.LoadValueTemplate(element)
-	    fmt.Println(templateStr)
-	    // load values file
-	    var env rialto.Deployment=rialto.Deployment{}
-	    env.ServiceInstance=serviceInstances[element.Name]
-	    env.Environment=rialto.EnvironmentInstance{}
-	    env.Environment.ExternalIPs=[]string{"asdas", "asdsadasdasd"}
-	    //rialto.ApplyTemplate(val1TemplatePath,serviceInstances[element.Name])
+		fmt.Println(serviceInstances[plannedServerInstances.Name])
 
-	    valueBytes:=rialto.ApplyTemplate(val1TemplatePath, env)
-	    err:= ioutil.WriteFile(fmt.Sprintf("./values.%v.yaml", element.Name), valueBytes, 0644)
-	    check(err)//fmt.Println(valueBuf.String())
+	    	// load values file
+		var deploymentEnvironment rialto.Deployment= rialto.Deployment{}
+		deploymentEnvironment.ServiceInstance=serviceInstances[plannedServerInstances.Name]
+		deploymentEnvironment.Environment=env
+
+		//write our the values file
+		var templateStr string = rialto.LoadValueTemplate(plannedServerInstances)
+		//fmt.Println(templateStr)
+		valueBytes:=rialto.ApplyTemplate(templateStr, deploymentEnvironment)
+		var valuesFileName string =  fmt.Sprintf("./values.%v.yaml", plannedServerInstances.Name)
+		err:= ioutil.WriteFile(valuesFileName, valueBytes, 0644)
+	    	check(err)//fmt.Println(valueBuf.String())
+
+		f.WriteString(fmt.Sprintf("helm install %v\n", plannedServerInstances.ChartSource.HelmRepo))
 
 
 
 
+
+	/*
         configFile := map[string]string{}
         for _,interfaceVal := range foundServiceConfig.Exposes {
             for _,propVal := range interfaceVal.Properties {
-//                fmt.Println(propVal.Name)
                 configFile[propVal.Name]="???"
             }
         }
-
-//        fmt.Println(configFile)
-        configFiles[foundServiceConfig.Name]=configFile
-
+	*/
     }
 
 //    fmt.Println(configFiles)

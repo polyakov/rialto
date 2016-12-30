@@ -30,6 +30,7 @@ type ServiceConfig struct {
     Name string `json:"name"`
     Exposes []ServiceInterface `json:"exposes"`
     DependsOn []ServiceInterface `json:"dependsOn"`
+    Properties []ServiceConfigProperty `json:"properties"`
 }
 
 type ServiceInstance struct {
@@ -37,7 +38,10 @@ type ServiceInstance struct {
     ServiceName string `json:"serviceName"`
     ChartSource ChartSource `json:"chartSource"`
     Exposes map[string]ServiceInstanceProperties
+    DependsOn map[string]ServiceInstanceProperties
+    Properties map[string]string
 }
+
 
 type ServiceInstanceProperties struct {
     Properties map[string]string
@@ -62,3 +66,6 @@ type ChartSource struct {
     Url string `json:"url"`
 }
 
+type Context struct {
+    Services map[string]ServiceConfig
+}
