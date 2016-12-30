@@ -1,6 +1,6 @@
 externalIPs: ["172.20.0.149","172.20.0.150","172.20.0.152","172.20.0.151"]
 ldapPort: 389
-nameOverride: "vp-test"
+serviceInstanceName: "vp-test"
 replicaCount: 2
 ldap_server: "ldap://ldap-svc:389/dc=example,dc=co"
 ldap_url: "ldap://ldap-svc:389"

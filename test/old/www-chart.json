@@ -1,0 +1,35 @@
+{
+   "name": "mitre-openid-connect",
+   "exposes": [
+      {
+         "name": "www",
+         "wellKnownType": "www",
+         "properties": [
+            {
+               "name": "port",
+               "wellKnownName": "wwwPort"
+            },
+            {
+               "name": "web_service_name"
+            }
+         ]
+      }
+   ],
+   "dependsOn": [
+      {
+         "name": "directoryServer",
+         "wellKnownType": "ldap",
+         "properties": [
+            {
+               "name": "sourcePort",
+               "wellKnownName": "ldapPort"
+            },
+            {
+               "name": "sourceServer",
+               "wellKnownName": "ldapServer"
+            }
+         ]
+      }
+
+   ]
+}

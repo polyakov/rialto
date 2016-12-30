@@ -3,8 +3,12 @@
     {
        "type": "ldap",
        "properties": [
-          { 
-		"name": "ldapPort", "defaultValue":389
+          {
+            "name": "ldapPort",
+            "defaultValue":"389"
+          },
+          {
+            "name": "ldapServer"
           }
        ]
     },
@@ -13,9 +17,9 @@
        "properties": [
           {
               "name": "wwwPort", 
-              "defaultValue": 80
+              "defaultValue": "80"
           }
        ]
     }
-]
+  ]
 }

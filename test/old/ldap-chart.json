@@ -1,0 +1,22 @@
+{
+   "name": "apacheDS",
+   "exposes": [
+      {
+         "name": "ldap",
+         "wellKnownType": "ldap",
+         "properties": [
+            {
+               "name": "port",
+               "defaultValue": "444",
+               "wellKnownName": "ldapPort"
+            },
+            {
+               "name": "serviceName"
+            },
+            {
+               "name": "nodeSelector"
+            }
+         ]
+      }
+   ]
+}

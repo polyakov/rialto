@@ -1,0 +1,13 @@
+{
+   "name": "apacheDS",
+   "exposes": [
+      {
+         "name": "ldap",
+         "properties": [
+            {"name": "port"},
+            {"name": "serviceName"},
+            {"name": "nodeSelector"}
+         ]
+      }
+   ]
+}

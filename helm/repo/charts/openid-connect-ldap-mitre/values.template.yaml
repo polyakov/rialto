@@ -1,0 +1,12 @@
+externalIPs: [{{range $index,$ip:= .Environment.ExternalIPs }}
+                           {{ if $index }} , {{end}}
+                           {{ $ip | quote  }}
+                        {{ end }}
+                     ]
+ldapPort: {{.ServiveInstance.DependsOn["directoryServer"].Propertes["name"]}}
+serviceInstanceName: {{.ServiceInstance.Name}}
+replicaCount: {{.ServiceInstance.Property["replicaCount].Value}}
+ldap_server: "ldap://{{.ServiceInstance.DependsOn['directoryServer'].Properties['sourceServer'].Value}}:{{.ServiceInstance.DependsOn['directoryServer'].Properties['sourcePort'].Value}}/{{.ServiceInstance.DependsOn['directoryServer'].Properties['sourceServer'].Value}}:{{.ServiceInstance.Properties['rootQuery'].Value}}"
+ldap_url: "ldap://{{.ServiceInstance.DependsOn['directoryServer'].Properties['sourceServer'].Value}}:{{.ServiceInstance.DependsOn['directoryServer'].Properties['sourcePort'].Value}}"
+ldap_base: {{.ServiceInstance.Properties["ldapBase"].Value | quote}}
+issuer_url: {{.ServiceInstance.Properties["externalIssuerUrl"].Value | quote}}

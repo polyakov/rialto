@@ -1,0 +1,3 @@
+externalIPs: [{{range $index,$ip:= .Environment.ExternalIPs }}{{ if $index }} , {{end}}"{{ $ip   }}"{{ end }}]
+ldapPort: {{.ServiceInstance.Exposes.ldap.Properties.port}}
+serviceInstanceName: "{{.ServiceInstance.Name}}"

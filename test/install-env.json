@@ -1,0 +1,13 @@
+{
+  "instances": [
+    {
+      "name": "apache-ds-instance",
+      "serviceName": "apacheDS",
+      "chartSource": {
+        "helmRepo":"hspc-helm",
+        "chartName":"ldap.ApacheDS",
+        "url": "http://hspc-helm.preparedmind.net"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "test-env",
+  "exposes": [
+    {
+      "name": "mitre-openid-conect",
+      "wellKnownType": "www",
+      "properties": [
+        {
+          "name": "port",
+          "wellKnownName": "wwwPort"
+        }
+      ]
+    }
+  ],
+  "dependsOn": [
+    {
+      "name": "directoryServer",
+      "wellKnownType": "ldap",
+      "properties": [
+        {
+          "name": "sourcePort",
+          "wellKnownName": "ldapPort"
+        },
+        {
+          "name": "sourceServer",
+          "wellKnownName": "ldapServer"
+        }
+      ]
+    }
+
+  ]
+}
