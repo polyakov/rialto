@@ -81,7 +81,7 @@ func main() {
 	    	check(err)//fmt.Println(valueBuf.String())
 
 		f.WriteString(fmt.Sprintf("helm install %v --values %v  \n",
-			fmt.Sprintf("%v\\%v", plannedServiceInstance.ChartSource.HelmRepo, plannedServiceInstance.ChartSource.ChartName),
+			fmt.Sprintf("%v/%v", plannedServiceInstance.ChartSource.HelmRepo, plannedServiceInstance.ChartSource.ChartName),
 			valuesFileName))
 
 
