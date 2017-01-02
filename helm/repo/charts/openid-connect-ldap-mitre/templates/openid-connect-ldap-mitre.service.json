@@ -1,0 +1,29 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": {{ .Values.serviceInstanceName | quote}}
+    },
+    "spec": {
+        "selector": {
+        	"app":"openid-connect"
+        },
+        "ports": [
+            {
+                "name": "mitreid-ldap-port",
+                "protocol": "TCP",
+                "port": 80,
+                "targetPort":8080 
+            }
+        ],
+        "externalIPs" : [
+           {{range $index, $ip := .Values.externalIPs}}
+              {{ if $index }} , {{end}}
+              {{ $ip | quote  }}
+           {{ end }}
+
+        ]
+
+    }
+
+}

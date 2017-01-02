@@ -2,7 +2,7 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "{{ template "fullname" . }}-svc"
+        "name": "{{ .Values.serviceInstanceName }}"
     },
     "spec": {
         "selector": {

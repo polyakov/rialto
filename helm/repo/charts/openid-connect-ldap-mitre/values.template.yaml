@@ -2,7 +2,7 @@ externalIPs: [{{range $index,$ip:= .Environment.ExternalIPs }}{{ if $index }} , 
 ldapPort: {{.ServiceInstance.DependsOn.directoryServer.Properties.sourcePort}}
 serviceInstanceName: "{{.ServiceInstance.Name}}"
 replicaCount: {{.ServiceInstance.Properties.replicaCount}}
-ldap_server: "ldap://{{.ServiceInstance.DependsOn.directoryServer.Properties.sourceServer}}:{{.ServiceInstance.DependsOn.directoryServer.Properties.sourcePort}}/{{.ServiceInstance.DependsOn.directoryServer.Properties.sourceServer}}:{{.ServiceInstance.Properties.rootQuery}}"
+ldap_server: "ldap://{{.ServiceInstance.DependsOn.directoryServer.Properties.sourceServer}}:{{.ServiceInstance.DependsOn.directoryServer.Properties.sourcePort}}/{{.ServiceInstance.Properties.rootQuery}}"
 ldap_url: "ldap://{{.ServiceInstance.DependsOn.directoryServer.Properties.sourceServer}}:{{.ServiceInstance.DependsOn.directoryServer.Properties.sourcePort}}"
 ldap_base: "{{.ServiceInstance.Properties.ldapBase }}"
 issuer_url: "{{.ServiceInstance.Properties.externalIssuerUrl }}"
