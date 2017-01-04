@@ -14,13 +14,13 @@
          "name": "directoryServer",
          "properties": [
             { "name": "sourcePort",  "defaultValue": "389" },
-            { "name": "sourceServer",  "defaultValue": "apacheds-svc" }
+            { "name": "sourceServer",  "defaultValue": "apache-ds-instance.default.svc.cluster.local" }
          ]
       }
    ],
    "properties": [
-      {"name": "replicaCount",  "defaultValue": "2"},
-      { "name": "rootQuery",  "defaultValue": "dc=example,dc=com"},
+      {"name": "replicaCount",  "defaultValue": "1"},
+      { "name": "rootQuery",  "defaultValue": "dc=example,dc=co"},
       { "name": "ldapBase", "defaultValue": "ou=Users,dc=example,dc=com"},
       { "name": "externalIssuerUrl", "defaultValue": "http://mitreid-svc:8080/ldap-openid-connect-server/"}
 

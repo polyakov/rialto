@@ -1,19 +1,19 @@
 apiVersion: v1
 entries:
   ldap.ApacheDS:
-  - created: 2017-01-01T15:51:57.853661146Z
+  - created: 2017-01-04T14:19:32.325658963Z
     description: ApacheDS install
-    digest: 9c4dba599d95d472a7063fffbc14ba94a6f6dc8deaae375274962fd72fe0ba4e
+    digest: 9126b3790101f0d74a6ac7a2035e881241b467eac1949355e0ecb51880b451f1
     name: ldap.ApacheDS
     urls:
     - http://127.0.0.1:8879/ldap.ApacheDS-0.1.0.tgz
     version: 0.1.0
   openid-connect-ldap-mitre:
-  - created: 2017-01-01T15:51:57.853853408Z
+  - created: 2017-01-04T14:19:32.328632666Z
     description: MITREid Connect with ldap overlay
-    digest: 9d282616b938d617163f73051407ee818228eebc85b791e7d956ea75be07a4b4
+    digest: d889dc14676ccc09ef2018480b47cabe75e1c0e4ac69e1461921a8666c8cf6ad
     name: openid-connect-ldap-mitre
     urls:
     - http://127.0.0.1:8879/openid-connect-ldap-mitre-0.1.0.tgz
     version: 0.1.0
-generated: 2017-01-01T15:51:57.853303784Z
+generated: 2017-01-04T14:19:32.324435415Z

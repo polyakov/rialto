@@ -1,0 +1,22 @@
+{
+  "instances": [
+    {
+      "name": "apache-ds-instance",
+      "serviceName": "apacheDS-svc",
+      "chartSource": {
+        "helmRepo":"hspc-helm",
+        "chartName":"ldap.ApacheDS",
+        "url": "http://127.0.0.1:8879"
+      }
+    },
+    {
+      "name": "openid-connect-instance",
+      "serviceName": "mitre-openid-connect-svc",
+      "chartSource": {
+        "helmRepo":"hspc-helm",
+        "chartName":"openid-connect-ldap-mitre",
+        "url": "http://127.0.0.1:8879"
+      }
+    }
+  ]
+}
